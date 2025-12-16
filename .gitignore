@@ -1,2 +1,32 @@
-venv/\n__pycache__/\n*.pyc\n.DS_Store\n.env
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment files
 .env
+.env.local
+
+# Database
+db.sqlite3
+
+# OS files
+.DS_Store
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Media uploads
+media/
+
+# Script used for git setup (internal)
+create_commits.ps1
+
+# Chroma DB
+chroma_db/

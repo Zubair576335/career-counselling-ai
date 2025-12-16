@@ -1,4 +1,4 @@
-# Sahay AI - AI-Powered Career Mentor
+# AI-Powered Career Mentor
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) 
 
 ## 🎯 **Problem Statement**
@@ -8,7 +8,7 @@ Many students and professionals struggle with:
 - **Skill Development**: Knowing what to learn next
 - **Job Search**: Getting personalized career advice
 
-## 🚀 **Solution: Sahay AI**
+## 🚀 **Solution: Career Counselling AI**
 An intelligent AI-powered career mentor that:
 - **Analyzes resumes** using advanced PDF parsing
 - **Provides personalized career guidance** through RAG (Retrieval Augmented Generation)
@@ -71,7 +71,7 @@ An intelligent AI-powered career mentor that:
 
 ## 🎯 **Project Structure**
 ```
-Sahay-AI/
+career_counselling_ai/
 ├── career_mentor_web/          # Django project
 ├── career_advisor/             # Main Django app
 ├── src/
@@ -180,12 +180,8 @@ python manage.py runserver
 
 ---
 
-## 🎯 **Built by Soham Tripathy**
+## 🎯 **Built by Zubair Khan**
 
-**Sahay AI** - Your intelligent career companion powered by AI.
+**Career Counselling AI** - Your intelligent career companion powered by AI.
 
-## 📫 Contact
 
-- **Email:** [soham4net@gmail.com](mailto:soham4net@gmail.com)  
-- **LinkedIn:** [/linkedin.com/in/sohamtripathy/](https://www.linkedin.com/in/sohamtripathy/)  
-- **GitHub:** [github.com/SOHAM-3T](https://github.com/SOHAM-3T)  

@@ -30,3 +30,5 @@ create_commits.ps1
 
 # Chroma DB
 chroma_db/
+
+docs/

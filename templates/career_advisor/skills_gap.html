@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Skills Gap Analysis Results - Sahay AI{% endblock %}
+{% block title %}Skills Gap Analysis Results - Career Counselling AI{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -9,10 +9,11 @@
             <i class="fas fa-search"></i> Skills Gap Analysis Results
         </h2>
         <p class="text-center lead">Analysis for <strong>{{ target_role }}</strong> role</p>
-        
+
         {% if rag_used %}
         <div class="alert alert-success text-center">
-            <i class="fas fa-robot"></i> <strong>AI-Powered Analysis:</strong> This analysis was generated using our advanced RAG pipeline!
+            <i class="fas fa-robot"></i> <strong>AI-Powered Analysis:</strong> This analysis was generated using our
+            advanced RAG pipeline!
         </div>
         {% else %}
         <div class="alert alert-info text-center">
@@ -50,7 +51,7 @@
         <div class="feature-card">
             <h4><i class="fas fa-check-circle text-success"></i> Your Current Skills</h4>
             <p>Skills you already have that are relevant for {{ target_role }}:</p>
-            
+
             {% if analysis.current_skills %}
             <div class="skills-container">
                 <div class="d-flex flex-wrap">
@@ -64,12 +65,12 @@
             {% endif %}
         </div>
     </div>
-    
+
     <div class="col-md-6">
         <div class="feature-card">
             <h4><i class="fas fa-exclamation-triangle text-warning"></i> Skills to Develop</h4>
             <p>Skills you need to acquire for {{ target_role }}:</p>
-            
+
             {% if analysis.missing_skills %}
             <div class="skills-container">
                 <div class="d-flex flex-wrap">
@@ -92,7 +93,7 @@
         <div class="feature-card">
             <h4><i class="fas fa-lightbulb text-primary"></i> Personalized Recommendations</h4>
             <p>Here's how to develop the missing skills:</p>
-            
+
             <div class="recommendations-list">
                 {% for recommendation in analysis.recommendations %}
                 <div class="recommendation-item mb-3 p-3 border-start border-primary border-4 bg-light">
@@ -169,21 +170,21 @@
 </div>
 
 <style>
-.recommendation-item {
-    transition: all 0.3s ease;
-}
+    .recommendation-item {
+        transition: all 0.3s ease;
+    }
 
-.recommendation-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+    .recommendation-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.ai-response {
-    border-left: 4px solid var(--primary-color);
-}
+    .ai-response {
+        border-left: 4px solid var(--primary-color);
+    }
 
-.border-start {
-    border-left-width: 4px !important;
-}
+    .border-start {
+        border-left-width: 4px !important;
+    }
 </style>
-{% endblock %} 
+{% endblock %}

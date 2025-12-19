@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sahay AI - Quick Deployment Script
+Career Counselling AI - Quick Deployment Script
 Automates the deployment process for different platforms
 """
 
@@ -185,7 +185,7 @@ def run_local():
 
 def main():
     """Main deployment function"""
-    parser = argparse.ArgumentParser(description="Sahay AI Deployment Script")
+    parser = argparse.ArgumentParser(description="Career Counselling AI Deployment Script")
     parser.add_argument("--platform", choices=["local", "heroku", "railway"], 
                        default="local", help="Deployment platform")
     parser.add_argument("--skip-tests", action="store_true", 
@@ -193,7 +193,7 @@ def main():
     
     args = parser.parse_args()
     
-    print("🚀 Sahay AI - Deployment Script")
+    print("🚀 Career Counselling AI - Deployment Script")
     print("=" * 50)
     
     if args.platform == "local":

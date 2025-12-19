@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Performance Status - Sahay AI{% endblock %}
+{% block title %}Performance Status - Career Counselling AI{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -18,9 +18,9 @@
         <div class="stats-card">
             <div class="stats-number">
                 {% if cache_info.rag_available %}
-                    <i class="fas fa-check-circle text-success"></i>
+                <i class="fas fa-check-circle text-success"></i>
                 {% else %}
-                    <i class="fas fa-times-circle text-danger"></i>
+                <i class="fas fa-times-circle text-danger"></i>
                 {% endif %}
             </div>
             <div>RAG Status</div>
@@ -36,9 +36,9 @@
         <div class="stats-card">
             <div class="stats-number">
                 {% if cache_info.global_model_loaded %}
-                    <i class="fas fa-check-circle text-success"></i>
+                <i class="fas fa-check-circle text-success"></i>
                 {% else %}
-                    <i class="fas fa-times-circle text-danger"></i>
+                <i class="fas fa-times-circle text-danger"></i>
                 {% endif %}
             </div>
             <div>Model Loaded</div>
@@ -216,4 +216,4 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

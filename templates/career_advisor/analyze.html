@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Resume Analysis - Sahay AI{% endblock %}
+{% block title %}Resume Analysis - Career Counselling AI{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -9,10 +9,11 @@
             <i class="fas fa-chart-pie"></i> Resume Analysis Results
         </h2>
         <p class="text-center lead">Your resume has been analyzed successfully! Here's what we found:</p>
-        
+
         {% if rag_available %}
         <div class="alert alert-success text-center">
-            <i class="fas fa-robot"></i> <strong>AI-Powered Analysis:</strong> Your resume has been processed through our advanced RAG pipeline for intelligent insights!
+            <i class="fas fa-robot"></i> <strong>AI-Powered Analysis:</strong> Your resume has been processed through
+            our advanced RAG pipeline for intelligent insights!
         </div>
         {% else %}
         <div class="alert alert-info text-center">
@@ -56,7 +57,7 @@
         <div class="feature-card">
             <h4><i class="fas fa-tools"></i> Skills Breakdown</h4>
             <p>Your resume contains <strong>{{ skills_count }} skills</strong> across various domains.</p>
-            
+
             {% if resume_data.skills %}
             <div class="skills-container">
                 <h6>Top Skills:</h6>
@@ -72,12 +73,13 @@
             {% endif %}
         </div>
     </div>
-    
+
     <div class="col-md-6">
         <div class="feature-card">
             <h4><i class="fas fa-project-diagram"></i> Project Portfolio</h4>
-            <p>Your resume showcases <strong>{{ projects_count }} projects</strong> demonstrating your technical abilities.</p>
-            
+            <p>Your resume showcases <strong>{{ projects_count }} projects</strong> demonstrating your technical
+                abilities.</p>
+
             {% if resume_data.projects %}
             <div class="projects-container">
                 <h6>Sample Projects:</h6>
@@ -104,7 +106,7 @@
         <div class="feature-card">
             <h4><i class="fas fa-graduation-cap"></i> Educational Background</h4>
             <p>Your resume shows <strong>{{ education_count }} education entries</strong>.</p>
-            
+
             {% if resume_data.education %}
             <div class="education-container">
                 {% for edu in resume_data.education|slice:":3" %}
@@ -117,12 +119,12 @@
             {% endif %}
         </div>
     </div>
-    
+
     <div class="col-md-6">
         <div class="feature-card">
             <h4><i class="fas fa-briefcase"></i> Professional Experience</h4>
             <p>Your resume contains <strong>{{ experience_count }} experience entries</strong>.</p>
-            
+
             {% if resume_data.experience %}
             <div class="experience-container">
                 {% for exp in resume_data.experience|slice:":3" %}
@@ -219,4 +221,4 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

@@ -3,233 +3,121 @@
 {% block title %}Learning Roadmap - Career Counselling AI{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <h2 class="text-center mb-4">
-            <i class="fas fa-map"></i> Learning Roadmap
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 font-sans">
+    
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+            <i class="fas fa-route text-indigo-600 mr-2"></i> Your Career Roadmap
         </h2>
-        <p class="text-center lead">Based on your current skills, here's a structured learning path to advance your
-            career</p>
+        <p class="text-xl text-slate-500 max-w-2xl mx-auto">
+            A step-by-step guide to transition into a <span class="font-semibold text-indigo-600">{{ target_role }}</span> role.
+        </p>
+
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="feature-card">
-            <h4><i class="fas fa-road"></i> Your Learning Journey</h4>
-
-            <div class="roadmap-container">
-                <!-- Python Path -->
-                {% if resume_data.skills %}
-                {% if "python" in resume_data.skills|join:" "|lower %}
-                <div class="roadmap-section mb-4">
-                    <h5><i class="fab fa-python text-primary"></i> Python Development Path</h5>
-                    <div class="roadmap-steps">
-                        <div class="step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <h6>Advanced Python</h6>
-                                <p>Decorators, Generators, Context Managers</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Timeline Section -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-8 pb-4 border-b border-slate-100">
+                    <i class="fas fa-map-signs mr-2 text-indigo-500"></i> The Journey
+                </h3>
+                
+                <div class="relative border-l-4 border-indigo-100 ml-3 md:ml-6 space-y-10">
+                    {% if roadmap.timeline %}
+                        {% for phase in roadmap.timeline %}
+                        <div class="relative pl-8 md:pl-10">
+                            <!-- Timeline dot -->
+                            <div class="absolute w-8 h-8 bg-indigo-600 rounded-full border-4 border-white shadow flex items-center justify-center text-white font-bold text-sm -left-4 top-0">
+                                {{ forloop.counter }}
+                            </div>
+                            
+                            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                                    <div>
+                                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">{{ phase.phase }}</span>
+                                        <h4 class="text-xl font-bold text-slate-800 mt-1">{{ phase.title }}</h4>
+                                    </div>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white border border-slate-200 text-slate-600 shadow-sm">
+                                        <i class="far fa-clock mr-1.5"></i> {{ phase.duration }}
+                                    </span>
+                                </div>
+                                <div class="p-6">
+                                    <p class="text-slate-600 mb-5">{{ phase.description }}</p>
+                                    
+                                    <div class="mb-5">
+                                        <h5 class="text-sm font-bold text-slate-800 uppercase tracking-wide mb-3">Key Topics</h5>
+                                        <div class="flex flex-wrap gap-2">
+                                            {% for topic in phase.topics %}
+                                            <span class="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                                {{ topic }}
+                                            </span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 rounded-lg p-4 border border-amber-100">
+                                        <h5 class="text-sm font-bold text-amber-800 flex items-center mb-1">
+                                            <i class="fas fa-laptop-code mr-2"></i> Project Idea
+                                        </h5>
+                                        <p class="text-amber-700 text-sm">{{ phase.project_idea }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <h6>Web Development</h6>
-                                <p>Django, Flask, FastAPI</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <h6>Data Science</h6>
-                                <p>Pandas, NumPy, Matplotlib</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">4</span>
-                            <div class="step-content">
-                                <h6>Machine Learning</h6>
-                                <p>Scikit-learn, TensorFlow, PyTorch</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Java Path -->
-                {% if "java" in resume_data.skills|join:" "|lower %}
-                <div class="roadmap-section mb-4">
-                    <h5><i class="fab fa-java text-primary"></i> Java Development Path</h5>
-                    <div class="roadmap-steps">
-                        <div class="step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <h6>Advanced Java</h6>
-                                <p>Collections, Streams, Lambda Expressions</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <h6>Spring Framework</h6>
-                                <p>Spring Boot, Spring MVC, Spring Security</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <h6>Microservices</h6>
-                                <p>Architecture, Docker, Kubernetes</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Data Path -->
-                {% if "sql" in resume_data.skills|join:" "|lower %}
-                <div class="roadmap-section mb-4">
-                    <h5><i class="fas fa-database text-primary"></i> Data Analysis Path</h5>
-                    <div class="roadmap-steps">
-                        <div class="step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <h6>Advanced SQL</h6>
-                                <p>Window Functions, CTEs, Performance</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <h6>Data Visualization</h6>
-                                <p>Tableau, Power BI, Python Libraries</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <h6>Business Intelligence</h6>
-                                <p>ETL, Data Warehousing, Analytics</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                {% endif %}
-
-                <!-- General Path -->
-                <div class="roadmap-section">
-                    <h5><i class="fas fa-star text-primary"></i> General Career Development</h5>
-                    <div class="roadmap-steps">
-                        <div class="step">
-                            <span class="step-number">1</span>
-                            <div class="step-content">
-                                <h6>Build Portfolio</h6>
-                                <p>Create real-world projects, contribute to open source</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">2</span>
-                            <div class="step-content">
-                                <h6>Networking</h6>
-                                <p>Attend tech meetups, join online communities</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-number">3</span>
-                            <div class="step-content">
-                                <h6>Stay Updated</h6>
-                                <p>Follow industry trends, read tech blogs</p>
-                            </div>
-                        </div>
-                    </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-slate-500 italic pl-8">No specific timeline generated. Please try again.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="feature-card">
-            <h5><i class="fas fa-chart-line"></i> Your Progress</h5>
-            <p><strong>Current Skills:</strong> {{ resume_data.skills|length }}</p>
-            <p><strong>Learning Areas:</strong> {{ roadmap.learning_areas|default:"3-4" }}</p>
-            <p><strong>Estimated Time:</strong> 6-12 months</p>
+        <!-- Sidebar Section -->
+        <div class="space-y-6">
+            <div class="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl shadow-md p-6 text-white relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 opacity-10 text-9xl">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4 relative z-10"><i class="fas fa-tachometer-alt mr-2"></i> Overview</h3>
+                <ul class="space-y-4 relative z-10">
+                    <li class="flex items-center justify-between">
+                        <span class="text-indigo-100">Estimated Time</span>
+                        <span class="font-bold text-white">{{ roadmap.estimated_months|default:3 }} Months</span>
+                    </li>
+                    <li class="flex items-center justify-between">
+                        <span class="text-indigo-100">Phases</span>
+                        <span class="font-bold text-white">{{ roadmap.timeline|length }} Steps</span>
+                    </li>
+                    <li class="flex items-center justify-between">
+                        <span class="text-indigo-100">Target Role</span>
+                        <span class="font-bold text-white">{{ target_role }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-2">
+                    <i class="fas fa-lightbulb text-amber-500 mr-2"></i> Tips for Success
+                </h3>
+                <ul class="space-y-3 text-sm text-slate-600">
+                    <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-2"></i> Focus on one phase at a time.</li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-2"></i> Build the project to apply knowledge.</li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-2"></i> Practice regularly on LeetCode/Kaggle.</li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-2"></i> Join relevant Discord/Reddit communities.</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 text-center">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">Have Questions?</h3>
+                <p class="text-sm text-slate-500 mb-4">Chat with our AI mentor to get specific advice on this roadmap.</p>
+                <a href="{% url 'career_advisor:career_chat' %}" class="inline-flex w-full items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
+                    <i class="fas fa-comments mr-2"></i> Chat with Mentor
+                </a>
+            </div>
         </div>
 
-        <div class="feature-card mt-3">
-            <h5><i class="fas fa-lightbulb"></i> Tips for Success</h5>
-            <ul class="small">
-                <li>Focus on one path at a time</li>
-                <li>Build projects to apply knowledge</li>
-                <li>Practice regularly with coding challenges</li>
-                <li>Join study groups or find mentors</li>
-                <li>Track your progress and celebrate wins</li>
-            </ul>
-        </div>
-
-        <div class="feature-card mt-3">
-            <h5><i class="fas fa-external-link-alt"></i> Resources</h5>
-            <ul class="small">
-                <li><a href="https://leetcode.com" target="_blank">LeetCode</a> - Coding practice</li>
-                <li><a href="https://coursera.org" target="_blank">Coursera</a> - Online courses</li>
-                <li><a href="https://github.com" target="_blank">GitHub</a> - Open source projects</li>
-                <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a> - Q&A</li>
-            </ul>
-        </div>
     </div>
 </div>
-
-<div class="row mt-4">
-    <div class="col-12 text-center">
-        <a href="{% url 'career_advisor:skills_gap_analysis' %}" class="btn btn-primary btn-lg me-3">
-            <i class="fas fa-search"></i> Analyze Skills Gap
-        </a>
-        <a href="{% url 'career_advisor:career_paths' %}" class="btn btn-outline-primary btn-lg">
-            <i class="fas fa-route"></i> Explore Career Paths
-        </a>
-    </div>
-</div>
-
-<style>
-    .roadmap-steps {
-        margin-left: 20px;
-    }
-
-    .step {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 20px;
-        position: relative;
-    }
-
-    .step-number {
-        background: var(--primary-color);
-        color: white;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        margin-right: 15px;
-        flex-shrink: 0;
-    }
-
-    .step-content h6 {
-        margin: 0;
-        color: var(--primary-color);
-    }
-
-    .step-content p {
-        margin: 5px 0 0 0;
-        color: #666;
-    }
-
-    .roadmap-section {
-        border-left: 3px solid var(--primary-color);
-        padding-left: 20px;
-    }
-</style>
 {% endblock %}

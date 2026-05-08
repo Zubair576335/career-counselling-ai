@@ -14,6 +14,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from utils.pdf_parser import extract_text_from_pdf
 from utils.resume_parser import parse_resume
+from utils.gap_analyzer import analyze_skill_gap
+from utils.roadmap_generator import generate_career_roadmap
 
 def home(request):
     """Home page view"""
@@ -112,19 +114,23 @@ def skills_gap_analysis(request):
     
     if request.method == 'POST':
         target_role = request.POST.get('target_role', 'Data Scientist')
+        current_skills = resume_data.get('skills', [])
         
-        # Try RAG-based analysis first
-        if rag_service.is_available():
-            analysis = rag_service.analyze_skills_gap_rag(target_role)
-            if 'error' not in analysis:
-                # RAG analysis successful
-                context = {
-                    'resume_data': resume_data,
-                    'analysis': analysis,
-                    'target_role': target_role,
-                    'rag_used': True,
-                }
-                return render(request, 'career_advisor/skills_gap.html', context)
+        # Try new Gemini-based analysis first
+        try:
+            analysis = analyze_skill_gap(current_skills, target_role)
+            request.session['target_role'] = target_role
+            request.session['missing_skills'] = analysis.get('missing_skills', [])
+            
+            context = {
+                'resume_data': resume_data,
+                'analysis': analysis,
+                'target_role': target_role,
+                'gemini_used': True,
+            }
+            return render(request, 'career_advisor/skills_gap.html', context)
+        except Exception as e:
+            print(f"DEBUG: Gemini Gap analysis failed: {e}")
         
         # Fallback to rule-based analysis
         analysis = analyze_skills_gap_fallback(resume_data, target_role)
@@ -133,7 +139,7 @@ def skills_gap_analysis(request):
             'resume_data': resume_data,
             'analysis': analysis,
             'target_role': target_role,
-            'rag_used': False,
+            'gemini_used': False,
         }
         
         return render(request, 'career_advisor/skills_gap.html', context)
@@ -192,14 +198,28 @@ def learning_roadmap(request):
         messages.warning(request, 'Please upload a resume first.')
         return redirect('career_advisor:home')
     
-    # Generate learning roadmap
-    roadmap = generate_learning_roadmap(resume_data)
+    target_role = request.session.get('target_role', 'Software Engineer')
+    missing_skills = request.session.get('missing_skills', [])
+    current_skills = resume_data.get('skills', [])
     
-    context = {
-        'resume_data': resume_data,
-        'roadmap': roadmap,
-        'rag_available': rag_service.is_available(),
-    }
+    try:
+        roadmap = generate_career_roadmap(current_skills, target_role, missing_skills)
+        context = {
+            'resume_data': resume_data,
+            'roadmap': roadmap,
+            'target_role': target_role,
+            'gemini_used': True,
+        }
+    except Exception as e:
+        print(f"DEBUG: Gemini Roadmap generation failed: {e}")
+        # Generate learning roadmap
+        roadmap = generate_learning_roadmap(resume_data)
+        
+        context = {
+            'resume_data': resume_data,
+            'roadmap': roadmap,
+            'gemini_used': False,
+        }
     
     return render(request, 'career_advisor/roadmap.html', context)
 

@@ -3,188 +3,245 @@
 {% block title %}Skills Gap Analysis Results - Career Counselling AI{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <h2 class="text-center mb-4">
-            <i class="fas fa-search"></i> Skills Gap Analysis Results
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans">
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight sm:text-4xl">
+            <i class="fas fa-search text-indigo-600 mr-2"></i> Skills Gap Analysis
         </h2>
-        <p class="text-center lead">Analysis for <strong>{{ target_role }}</strong> role</p>
+        <p class="mt-4 text-xl text-slate-500">
+            Target Role: <span class="font-bold text-indigo-600">{{ target_role }}</span>
+        </p>
 
-        {% if rag_used %}
-        <div class="alert alert-success text-center">
-            <i class="fas fa-robot"></i> <strong>AI-Powered Analysis:</strong> This analysis was generated using our
-            advanced RAG pipeline!
-        </div>
-        {% else %}
-        <div class="alert alert-info text-center">
-            <i class="fas fa-info-circle"></i> <strong>Rule-Based Analysis:</strong> Using predefined career guidelines
-        </div>
-        {% endif %}
-    </div>
-</div>
 
-<!-- Analysis Summary -->
-<div class="row mb-4">
-    <div class="col-md-4">
-        <div class="stats-card">
-            <div class="stats-number">{{ analysis.current_skills|length }}</div>
-            <div>Your Skills</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="stats-card">
-            <div class="stats-number">{{ analysis.missing_skills|length }}</div>
-            <div>Skills to Develop</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="stats-card">
-            <div class="stats-number">{{ analysis.recommendations|length }}</div>
-            <div>Recommendations</div>
-        </div>
-    </div>
-</div>
 
-<!-- Current Skills -->
-<div class="row mb-4">
-    <div class="col-md-6">
-        <div class="feature-card">
-            <h4><i class="fas fa-check-circle text-success"></i> Your Current Skills</h4>
-            <p>Skills you already have that are relevant for {{ target_role }}:</p>
 
-            {% if analysis.current_skills %}
-            <div class="skills-container">
-                <div class="d-flex flex-wrap">
-                    {% for skill in analysis.current_skills %}
-                    <span class="badge bg-success me-2 mb-2">{{ skill }}</span>
-                    {% endfor %}
+
+    </div>
+
+    <!-- Stats Section -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div
+            class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col items-center justify-center transform transition duration-300 hover:scale-105 hover:shadow-md">
+            <!-- Readiness Score Circular Progress -->
+            <div class="relative w-24 h-24 mb-3">
+                <svg class="w-full h-full" viewBox="0 0 36 36">
+                    <path class="text-slate-200" stroke-dasharray="100, 100"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
+                        stroke="currentColor" stroke-width="3"></path>
+                    <path class="text-indigo-600" stroke-dasharray="{{ analysis.readiness_score|default:0 }}, 100"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
+                        stroke="currentColor" stroke-width="3"></path>
+                </svg>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-2xl font-bold text-slate-800">{{ analysis.readiness_score|default:0 }}%</span>
                 </div>
             </div>
-            {% else %}
-            <p class="text-muted">No relevant skills found in your resume.</p>
-            {% endif %}
+            <div class="text-sm font-medium text-slate-500 uppercase tracking-wide">Readiness Score</div>
+        </div>
+
+        <div
+            class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col items-center justify-center transform transition duration-300 hover:scale-105 hover:shadow-md">
+            <div class="text-4xl font-extrabold text-emerald-500 mb-2">{{ analysis.matching_skills|length }}</div>
+            <div class="text-sm font-medium text-slate-500 uppercase tracking-wide">Matching Skills</div>
+        </div>
+
+        <div
+            class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col items-center justify-center transform transition duration-300 hover:scale-105 hover:shadow-md">
+            <div class="text-4xl font-extrabold text-rose-500 mb-2">{{ analysis.missing_skills|length }}</div>
+            <div class="text-sm font-medium text-slate-500 uppercase tracking-wide">Missing Skills</div>
+        </div>
+
+        <div
+            class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col items-center justify-center transform transition duration-300 hover:scale-105 hover:shadow-md">
+            <div class="text-4xl font-extrabold text-amber-500 mb-2">{{ analysis.recommendations|length }}</div>
+            <div class="text-sm font-medium text-slate-500 uppercase tracking-wide">Action Items</div>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="feature-card">
-            <h4><i class="fas fa-exclamation-triangle text-warning"></i> Skills to Develop</h4>
-            <p>Skills you need to acquire for {{ target_role }}:</p>
+    <!-- Skills Comparison -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- Matching Skills -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="bg-emerald-50 px-6 py-4 border-b border-emerald-100">
+                <h3 class="text-lg font-bold text-emerald-800 flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i> Current Match
+                </h3>
+            </div>
+            <div class="p-6">
+                {% if analysis.matching_skills %}
+                <div class="flex flex-wrap gap-2">
+                    {% for skill in analysis.matching_skills %}
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 border border-emerald-200 shadow-sm">
+                        {{ skill }}
+                    </span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-slate-500 italic">No matching skills found.</p>
+                {% endif %}
+            </div>
+        </div>
 
-            {% if analysis.missing_skills %}
-            <div class="skills-container">
-                <div class="d-flex flex-wrap">
+        <!-- Missing Skills -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="bg-rose-50 px-6 py-4 border-b border-rose-100">
+                <h3 class="text-lg font-bold text-rose-800 flex items-center">
+                    <i class="fas fa-exclamation-circle mr-2"></i> Skills to Acquire
+                </h3>
+            </div>
+            <div class="p-6">
+                {% if analysis.missing_skills %}
+                <div class="flex flex-wrap gap-2">
                     {% for skill in analysis.missing_skills %}
-                    <span class="badge bg-warning text-dark me-2 mb-2">{{ skill }}</span>
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-rose-100 text-rose-800 border border-rose-200 shadow-sm">
+                        {{ skill }}
+                    </span>
                     {% endfor %}
                 </div>
+                {% else %}
+                <p class="text-emerald-600 font-medium"><i class="fas fa-party-horn"></i> You have all required skills!
+                </p>
+                {% endif %}
             </div>
-            {% else %}
-            <p class="text-success">Great! You have all the required skills for this role.</p>
-            {% endif %}
         </div>
     </div>
-</div>
 
-<!-- AI-Generated Recommendations -->
-{% if analysis.recommendations %}
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="feature-card">
-            <h4><i class="fas fa-lightbulb text-primary"></i> Personalized Recommendations</h4>
-            <p>Here's how to develop the missing skills:</p>
-
-            <div class="recommendations-list">
-                {% for recommendation in analysis.recommendations %}
-                <div class="recommendation-item mb-3 p-3 border-start border-primary border-4 bg-light">
-                    <i class="fas fa-arrow-right text-primary me-2"></i>
-                    {{ recommendation }}
+    <!-- Career Insights Section -->
+    <div class="mb-12">
+        <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+            <i class="fas fa-chart-line text-indigo-600 mr-3"></i> Career Insights & Progression
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- Learning Difficulty -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wide">Difficulty</h4>
+                    <i class="fas fa-tachometer-alt text-slate-400 text-xl"></i>
                 </div>
-                {% endfor %}
+                <div class="text-2xl font-bold text-slate-800">{{ analysis.learning_difficulty|default:"Moderate" }}</div>
             </div>
-        </div>
-    </div>
-</div>
-{% endif %}
 
-<!-- AI Insights -->
-{% if rag_used and analysis.answer %}
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="feature-card">
-            <h4><i class="fas fa-robot text-primary"></i> AI Career Insights</h4>
-            <div class="ai-response p-3 bg-primary bg-opacity-10 rounded">
-                <p class="mb-0"><strong>AI Analysis:</strong> {{ analysis.answer }}</p>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-
-<!-- Action Plan -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="feature-card">
-            <h4><i class="fas fa-road text-primary"></i> Your Action Plan</h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <h6><i class="fas fa-1"></i> Immediate Actions (Next 30 days)</h6>
-                    <ul>
-                        <li>Prioritize the top 2-3 missing skills</li>
-                        <li>Start with online courses or tutorials</li>
-                        <li>Set specific learning goals</li>
-                    </ul>
+            <!-- Time to Transition -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wide">Est. Time</h4>
+                    <i class="fas fa-hourglass-half text-slate-400 text-xl"></i>
                 </div>
-                <div class="col-md-6">
-                    <h6><i class="fas fa-2"></i> Medium-term Goals (3-6 months)</h6>
-                    <ul>
-                        <li>Complete certification courses</li>
-                        <li>Build projects using new skills</li>
-                        <li>Practice through real-world applications</li>
-                    </ul>
+                <div class="text-2xl font-bold text-slate-800">{{ analysis.estimated_time_to_transition|default:"3-6 Months" }}</div>
+            </div>
+
+            <!-- Salary Insights -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wide">Salary</h4>
+                    <i class="fas fa-money-bill-wave text-slate-400 text-xl"></i>
                 </div>
+                <div class="text-sm font-medium text-slate-700 leading-snug">{{ analysis.salary_insights|default:"Competitive based on experience." }}</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Growth Outlook & Roles -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h4 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                    <i class="fas fa-level-up-alt text-emerald-500 mr-2"></i> Outlook & Next Roles
+                </h4>
+                <p class="text-slate-600 mb-4 text-sm">{{ analysis.career_growth_outlook|default:"Strong growth potential in the coming years." }}</p>
+                
+                {% if analysis.recommended_next_roles %}
+                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">Target Roles</h5>
+                <div class="flex flex-wrap gap-2">
+                    {% for role in analysis.recommended_next_roles %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                        {{ role }}
+                    </span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Suggested Projects & Certs -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h4 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                    <i class="fas fa-laptop-code text-indigo-500 mr-2"></i> Actionable Steps
+                </h4>
+                
+                {% if analysis.suggested_projects %}
+                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">Build Projects</h5>
+                <ul class="list-disc list-inside text-sm text-slate-600 mb-4 space-y-1">
+                    {% for project in analysis.suggested_projects %}
+                    <li>{{ project }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                {% if analysis.recommended_certifications %}
+                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">Certifications</h5>
+                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1">
+                    {% for cert in analysis.recommended_certifications %}
+                    <li>{{ cert }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
         </div>
     </div>
-</div>
 
-<!-- Next Steps -->
-<div class="row mt-5">
-    <div class="col-12 text-center">
-        <h4>What would you like to do next?</h4>
-        <div class="d-flex justify-content-center flex-wrap gap-3">
-            <a href="{% url 'career_advisor:learning_roadmap' %}" class="btn btn-primary btn-lg">
-                <i class="fas fa-map"></i> View Learning Roadmap
+    <!-- Recommendations -->
+    {% if analysis.recommendations %}
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-12">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-5">
+            <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fas fa-graduation-cap mr-3"></i> Learning Recommendations
+            </h3>
+        </div>
+        <div class="divide-y divide-slate-100">
+            {% for rec in analysis.recommendations %}
+            <div class="p-6 hover:bg-slate-50 transition duration-150">
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-lg font-bold text-slate-800">{{ rec.skill }}</span>
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-indigo-100 text-indigo-800">
+                                {{ rec.resource_type }}
+                            </span>
+                        </div>
+                        <p class="text-slate-600">{{ rec.reason }}</p>
+                    </div>
+                    <div class="sm:flex-shrink-0">
+                        <a href="https://www.youtube.com/results?search_query={{ rec.skill }}+tutorial" target="_blank"
+                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                            <i class="fab fa-youtube mr-2"></i> Find Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Action Bar -->
+    <div class="bg-slate-50 rounded-2xl p-8 text-center border border-slate-200">
+        <h3 class="text-2xl font-bold text-slate-800 mb-6">Ready to start your journey?</h3>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{% url 'career_advisor:learning_roadmap' %}"
+                class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-md hover:shadow-lg transition-all duration-200">
+                <i class="fas fa-map-marked-alt mr-2"></i> Generate Roadmap
             </a>
-            <a href="{% url 'career_advisor:career_chat' %}" class="btn btn-outline-primary btn-lg">
-                <i class="fas fa-comments"></i> Ask Career Questions
+            <a href="{% url 'career_advisor:career_chat' %}"
+                class="inline-flex items-center justify-center px-6 py-3 border border-slate-300 shadow-sm text-base font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-50 transition-colors duration-200">
+                <i class="fas fa-comment-dots mr-2"></i> AI Career Chat
             </a>
-            <a href="{% url 'career_advisor:career_paths' %}" class="btn btn-outline-primary btn-lg">
-                <i class="fas fa-route"></i> Explore Other Career Paths
-            </a>
-            <a href="{% url 'career_advisor:skills_gap_analysis' %}" class="btn btn-outline-secondary btn-lg">
-                <i class="fas fa-search"></i> Analyze Different Role
+            <a href="{% url 'career_advisor:skills_gap_analysis' %}"
+                class="inline-flex items-center justify-center px-6 py-3 border border-slate-300 shadow-sm text-base font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-50 transition-colors duration-200">
+                <i class="fas fa-redo-alt mr-2"></i> Analyze Another Role
             </a>
         </div>
     </div>
 </div>
-
-<style>
-    .recommendation-item {
-        transition: all 0.3s ease;
-    }
-
-    .recommendation-item:hover {
-        transform: translateX(5px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .ai-response {
-        border-left: 4px solid var(--primary-color);
-    }
-
-    .border-start {
-        border-left-width: 4px !important;
-    }
-</style>
 {% endblock %}

@@ -448,7 +448,25 @@ def parse_resume_enhanced(raw_text: str) -> Dict[str, any]:
 def parse_resume(raw_text: str) -> Dict[str, any]:
     """
     Main resume parsing function (backward compatibility).
+    Tries to use Gemini API first, falls back to regex if it fails.
     """
+    try:
+        from .gemini_service import analyze_resume_text
+        gemini_result = analyze_resume_text(raw_text)
+        
+        if gemini_result and isinstance(gemini_result, dict) and gemini_result.get("skills"):
+            logging.info(f"Successfully parsed resume using Gemini API.")
+            gemini_result['raw_text'] = raw_text
+            gemini_result['metadata'] = {
+                'total_characters': len(raw_text),
+                'sections_found': [k for k in ['skills', 'education', 'experience', 'projects'] if gemini_result.get(k)],
+                'contact_info_found': False,
+                'used_gemini': True
+            }
+            return gemini_result
+    except Exception as e:
+        logging.error(f"Gemini parsing failed: {e}. Falling back to regex.")
+        
     return parse_resume_enhanced(raw_text)
 
 
